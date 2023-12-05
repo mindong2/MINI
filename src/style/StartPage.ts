@@ -25,6 +25,12 @@ export const FormField = styled.section`
   width: 64.8rem;
   min-width: 64.8rem;
   padding: 0 8rem;
+  @media screen and (max-width: 648px) {
+    flex: 1;
+    width: 100%;
+    min-width: unset;
+    padding: 4rem;
+  }
 `;
 
 export const BgField = styled.section`
@@ -60,6 +66,10 @@ export const BgField = styled.section`
   .bg_slide5 {
     background: url("https://images.unsplash.com/photo-1457364887197-9150188c107b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
       no-repeat top left / cover;
+  }
+
+  @media screen and (max-width: 648px) {
+    display: none;
   }
 `;
 
@@ -104,11 +114,16 @@ export const Input = styled.input`
       border: 1px solid #ff5d6a;
       box-shadow: none;
     }
+    &.pink_btn {
+      background-color: #ff5d6a;
+      color: #fff;
+      border: 1px solid #ff5d6a;
+      box-shadow: none;
+    }
   }
 `;
 
 export const ErrorMSG = styled.p`
-  margin-top: 2rem;
   color: red;
   font-size: 2rem;
 `;

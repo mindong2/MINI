@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { Form, ErrorMSG, FlexWrap, FormField, Input, LoginTitle, Logo, NoticeMSG } from "../style/StartPage";
 import BackgroundField from "../components/BackgroundField";
+import { ErrorFilter } from "../util/firebaseErrors";
 interface IInput {
   name: string;
   email: string;
@@ -32,7 +33,8 @@ const CreateAccount = () => {
         navigate("/");
       } catch (err) {
         if (err instanceof FirebaseError) {
-          setError(`${err}`);
+          console.log(err);
+          setError(ErrorFilter(err));
         }
       } finally {
         setIsLoading(false);
@@ -53,15 +55,15 @@ const CreateAccount = () => {
             <Input {...register("name", { required: true })} type="text" placeholder="이름을 작성해 주세요." />
             <Input {...register("email", { required: true })} type="email" placeholder="이메일을 작성해 주세요." />
             <Input {...register("password", { required: true })} type="password" placeholder="비밀번호를 작성해 주세요." />
-            <Input type="submit" value={isLoading ? "회원가입중..." : "회원가입"} />
+            {error !== "" ? <ErrorMSG>{error}</ErrorMSG> : null}
+            <Input type="submit" value={isLoading ? "회원가입중..." : "회원가입"} className="pink_btn" />
           </Form>
           <NoticeMSG>
             <Link to={"/login"}>이미 계정이 있으시다면?</Link>
           </NoticeMSG>
-          {error !== "" ? <ErrorMSG>{error}</ErrorMSG> : null}
         </FormField>
 
-        <BackgroundField />
+        <BackgroundField bgType={"create"} />
       </FlexWrap>
     </>
   );

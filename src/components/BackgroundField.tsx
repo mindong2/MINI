@@ -4,7 +4,10 @@ import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/autoplay";
-const BackgroundField = () => {
+
+type BgType = string;
+
+const BackgroundField = ({ bgType }: { bgType: BgType }) => {
   return (
     <BgField>
       <Swiper
@@ -16,11 +19,31 @@ const BackgroundField = () => {
         allowTouchMove={false}
         effect={"fade"}
       >
-        <SwiperSlide className="swiper-slide bg_slide"></SwiperSlide>
-        <SwiperSlide className="swiper-slide bg_slide bg_slide2"></SwiperSlide>
-        <SwiperSlide className="swiper-slide bg_slide bg_slide3"></SwiperSlide>
-        <SwiperSlide className="swiper-slide bg_slide bg_slide4"></SwiperSlide>
-        <SwiperSlide className="swiper-slide bg_slide bg_slide5"></SwiperSlide>
+        {bgType === "login" ? (
+          <>
+            <SwiperSlide className="swiper-slide bg_slide"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide2"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide3"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide4"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide5"></SwiperSlide>
+          </>
+        ) : bgType === "create" ? (
+          <>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide3"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide5"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide4"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide2"></SwiperSlide>
+          </>
+        ) : (
+          <>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide5"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide2"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide4"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide"></SwiperSlide>
+            <SwiperSlide className="swiper-slide bg_slide bg_slide3"></SwiperSlide>
+          </>
+        )}
       </Swiper>
     </BgField>
   );

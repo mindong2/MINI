@@ -8,6 +8,7 @@ import GithubBtn from "../components/GithubBtn";
 import GoogleBtn from "../components/GoogleBtn";
 import { Form, ErrorMSG, FlexWrap, FormField, Input, LoginTitle, Logo, NoticeMSG } from "../style/StartPage";
 import BackgroundField from "../components/BackgroundField";
+import { ErrorFilter } from "../util/firebaseErrors";
 
 interface IInput {
   email: string;
@@ -18,11 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IInput>();
+  const { register, handleSubmit } = useForm<IInput>();
 
   const onSubmit: SubmitHandler<IInput> = async (data) => {
     if (isLoading || data.email === "" || data.password === "") return;
@@ -33,7 +30,8 @@ const Login = () => {
       navigate("/");
     } catch (err) {
       if (err instanceof FirebaseError) {
-        setError(`${err}`);
+        console.log(err);
+        setError(ErrorFilter(err));
       }
     } finally {
       setIsLoading(false);
@@ -49,10 +47,10 @@ const Login = () => {
           <LoginTitle>로그인</LoginTitle>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Input {...register("email", { required: true })} type="email" placeholder="이메일을 작성해 주세요." />
-            {errors.email && <ErrorMSG>{errors.email?.message}</ErrorMSG>}
             <Input {...register("password", { required: true })} type="password" placeholder="비밀번호를 작성해 주세요." />
-            {errors.password && <ErrorMSG>{errors.password?.message}</ErrorMSG>}
-            <Input type="submit" value={isLoading ? "로그인중..." : "로그인"} />
+            {error !== "" ? <ErrorMSG>{error}</ErrorMSG> : null}
+
+            <Input type="submit" value={isLoading ? "로그인중..." : "로그인"} className="pink_btn" />
           </Form>
           <GithubBtn />
           <GoogleBtn />
@@ -63,11 +61,9 @@ const Login = () => {
           <NoticeMSG>
             <Link to={"/send-message"}>비밀번호를 잊어버렸어요</Link>
           </NoticeMSG>
-
-          {error !== "" ? <ErrorMSG>{error}</ErrorMSG> : null}
         </FormField>
 
-        <BackgroundField />
+        <BackgroundField bgType={"login"} />
       </FlexWrap>
     </>
   );
