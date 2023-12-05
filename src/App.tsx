@@ -4,12 +4,6 @@ import router from "./router";
 import styled from "styled-components";
 import { auth } from "./firebase";
 
-const Wrapper = styled.div`
-  width: 720px;
-  padding: 50px 4.17%;
-  margin: 0 auto;
-`;
-
 const LoadingScreen = styled.div`
   position: fixed;
   top: 0;
@@ -35,7 +29,7 @@ function App() {
     init();
   }, []);
 
-  return <Wrapper>{isLoading ? <LoadingScreen>Loading...</LoadingScreen> : <RouterProvider router={router} />}</Wrapper>;
+  return <>{isLoading ? <LoadingScreen>Loading...</LoadingScreen> : <RouterProvider router={router} />}</>;
 }
 
 export default App;

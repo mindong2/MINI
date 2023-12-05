@@ -5,6 +5,7 @@ import Profile from "./routes/Profile";
 import Login from "./routes/Login";
 import CreateAccount from "./routes/CreateAccount";
 import ProtectRoute from "./components/protect-route";
+import SendMessage from "./routes/SendMessage";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/create-account",
     element: <CreateAccount />,
+  },
+  {
+    path: "/send-message",
+    element: <SendMessage />,
   },
 ]);
 
