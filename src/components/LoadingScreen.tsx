@@ -35,19 +35,19 @@ const Wrapper = styled.div`
 
   @keyframes colors {
     0% {
-      stroke: #4285f4;
+      stroke: #ff5d6a;
     }
     25% {
-      stroke: #de3e35;
+      stroke: #ff5d6a;
     }
     50% {
-      stroke: #f7c223;
+      stroke: #ff5d6a;
     }
     75% {
-      stroke: #1b9a59;
+      stroke: #ff5d6a;
     }
     100% {
-      stroke: #4285f4;
+      stroke: #ff5d6a;
     }
   }
   @keyframes dash {

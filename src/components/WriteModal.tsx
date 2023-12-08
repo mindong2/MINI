@@ -57,7 +57,7 @@ const FileLabel = styled.label`
   }
 `;
 
-const TextArea = styled.textarea`
+export const TextArea = styled.textarea`
   width: 100%;
   padding: 2rem;
   margin-top: 2rem;
@@ -120,6 +120,10 @@ const WriteModal = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateA
 
   const onSubmit = async () => {
     if (!user) return;
+    if (thread === "") {
+      alert("쓰레드를 작성해주세요!");
+      return;
+    }
     if (window.confirm("정말로 게시하겠어요?")) {
       setIsLoading(true);
       try {
