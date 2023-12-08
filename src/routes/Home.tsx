@@ -1,43 +1,30 @@
-import { useState } from "react";
 import styled from "styled-components";
-import WriteModal from "../components/WriteModal";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import Timeline from "../components/Timeline";
 
 const Wrapper = styled.div`
   width: 64.8rem;
   margin: 0 auto;
+  @media screen and (max-width: 1275px) {
+    width: 48rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 46rem;
+  }
+
+  @media screen and (max-width: 648px) {
+    max-width: 64.8rem;
+    width: 100%;
+    padding: 0 4.17%;
+  }
 `;
 
-const Thread = styled.ul`
-  padding: 5rem 0;
-`;
-
-const ThreadList = styled.li``;
 const Home = () => {
-  const [isModal, setIsModal] = useState(false);
-  const navigate = useNavigate();
-
   return (
     <>
       <Wrapper>
-        <Thread>
-          <ThreadList>
-            <button onClick={() => setIsModal(true)}>글쓰기</button>
-            <button
-              onClick={() => {
-                signOut(auth);
-                navigate("/login");
-              }}
-            >
-              로그아웃
-            </button>
-          </ThreadList>
-        </Thread>
+        <Timeline />
       </Wrapper>
-
-      {isModal ? <WriteModal setIsModal={setIsModal} /> : null}
     </>
   );
 };

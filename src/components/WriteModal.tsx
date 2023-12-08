@@ -7,7 +7,7 @@ import { auth, db, storage } from "../firebase";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Modal = styled.div`
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   width: 60rem;
@@ -144,11 +144,12 @@ const WriteModal = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateA
           await updateDoc(doc, {
             fileUrl: url,
           });
+
+          // storage에서 uploaded File 제거
+          const deleteRef = await ref(storage, `uploads/${user.uid}/${user.uid}${user.displayName}`);
+          // 파일저장
+          await deleteObject(deleteRef);
         }
-        // storage에서 uploaded File 제거
-        const deleteRef = await ref(storage, `uploads/${user.uid}/${user.uid}${user.displayName}`);
-        // 파일저장
-        await deleteObject(deleteRef);
 
         setThread("");
         setFile(null);
@@ -175,6 +176,13 @@ const WriteModal = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateA
     uploadFileFn();
   }, [file, user]);
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
   return (
     <>
       <Modal>
@@ -183,7 +191,7 @@ const WriteModal = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateA
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </CloseBtn>
-        <Form onSubmit={onSubmit} style={{ textAlign: "center" }}>
+        <Form name="writeForm" onSubmit={onSubmit} style={{ textAlign: "center" }}>
           {uploadedFile === "" ? (
             <FileLabel htmlFor={"my_file"}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
