@@ -5,6 +5,7 @@ import { timeToDate } from "../util/util";
 import { TextArea } from "./WriteModal";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.li`
   padding: 3rem;
@@ -67,6 +68,7 @@ const ThreadText = styled.p`
 
 const Avatar = styled.img`
   width: 5rem;
+  height: 5rem;
   margin-right: 1rem;
   border-radius: 50%;
 `;
@@ -128,12 +130,11 @@ const UpdateBtn = styled.button`
   }
 `;
 
-const ThreadList = ({ userName, userId, fileUrl, thread, createdAt, avatar, id }: IThread) => {
+const ThreadList = ({ email, userName, userId, fileUrl, thread, createdAt, id, avatar }: IThread) => {
   const user = auth.currentUser;
   const [text, setText] = useState(thread);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isUtil, setIsUtil] = useState(false);
-
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     setText(value);
@@ -178,10 +179,12 @@ const ThreadList = ({ userName, userId, fileUrl, thread, createdAt, avatar, id }
     <Wrapper>
       <Threadtitle>
         <div className="userInfo">
-          <Avatar src={avatar ? avatar : "/img/user.png"} />
+          <Link to={`/profile/${userId}`}>
+            <Avatar src={avatar ? avatar : "/img/user.png"} />
+          </Link>
           <div className="infoTitle">
             <div className="userName">{userName}</div>
-            <div className="userId">{`#${userId.slice(0, 6)}`}</div>
+            <div className="userId">{`${email}`}</div>
           </div>
         </div>
         <div className="createdAt">

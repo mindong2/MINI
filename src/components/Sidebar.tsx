@@ -11,6 +11,7 @@ const Aside = styled.aside`
   padding: 3rem;
   border-right: 1px solid #ccc;
   background-color: #fff;
+  z-index: 11;
   @media screen and (max-width: 1275px) {
     width: 10rem;
 
@@ -94,9 +95,11 @@ const MenuTab = styled.li`
     }
   }
 
-  svg {
+  svg,
+  img {
     width: 3rem;
     margin-right: 1rem;
+    border-radius: 50%;
   }
 
   @media screen and (max-width: 648px) {
@@ -111,6 +114,7 @@ const MenuTab = styled.li`
 `;
 const Sidebar = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const navigate = useNavigate();
+  const user = auth.currentUser;
   const Logout = () => {
     if (window.confirm("로그아웃 하시겠어요?")) {
       signOut(auth);
@@ -140,14 +144,18 @@ const Sidebar = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateActi
           <span className="tab_text">글쓰기</span>
         </MenuTab>
 
-        <MenuTab onClick={() => setIsModal(true)}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-            />
-          </svg>
+        <MenuTab onClick={() => navigate(`/profile/${user?.uid}`)}>
+          {user?.photoURL !== null ? (
+            <img src={user?.photoURL} alt="" />
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+              />
+            </svg>
+          )}
 
           <span className="tab_text">프로필</span>
         </MenuTab>

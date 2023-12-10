@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { Form, ErrorMSG, FlexWrap, FormField, Input, LoginTitle, Logo, NoticeMSG } from "../style/StartPage";
 import BackgroundField from "../components/BackgroundField";
 import { ErrorFilter } from "../util/firebaseErrors";
+import { doc, setDoc } from "firebase/firestore";
 interface IInput {
   name: string;
   email: string;
@@ -28,6 +29,13 @@ const CreateAccount = () => {
         const credential = await createUserWithEmailAndPassword(auth, data.email, data.password);
         await updateProfile(credential.user, {
           displayName: data.name,
+        });
+        await setDoc(doc(db, `userInfo`, `${credential.user.uid}`), {
+          userName: credential.user.displayName,
+          email: credential.user.email,
+          avatar: credential.user.photoURL,
+          userId: credential.user.uid,
+          createdAt: Date.now(),
         });
         alert("회원가입이 완료되었습니다!");
         navigate("/");

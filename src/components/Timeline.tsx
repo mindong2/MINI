@@ -4,7 +4,7 @@ import { Unsubscribe, collection, limit, onSnapshot, orderBy, query } from "fire
 import styled from "styled-components";
 import ThreadList from "../components/ThreadList";
 
-const Thread = styled.ul`
+export const Thread = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 2rem 0;
@@ -14,6 +14,7 @@ const Thread = styled.ul`
 export interface IThread {
   id: string;
   userName: string;
+  email: string;
   userId: string;
   thread: string;
   fileUrl?: string;
@@ -39,8 +40,8 @@ const Timeline = () => {
 
       unsubscribe = await onSnapshot(fetchQuery, (snapshot) => {
         const threadArr = snapshot.docs.map((doc) => {
-          const { userId, userName, thread, fileUrl, createdAt } = doc.data();
-          return { userId, userName, thread, fileUrl, createdAt, id: doc.id };
+          const { email, userId, userName, thread, fileUrl, avatar, createdAt } = doc.data();
+          return { email, userId, userName, thread, fileUrl, createdAt, avatar, id: doc.id };
         });
         setThreadData(threadArr);
       });

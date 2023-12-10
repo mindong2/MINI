@@ -1,14 +1,23 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { OauthBtn } from "./GithubBtn";
+import { doc, setDoc } from "firebase/firestore";
 
 const GoogleBtn = () => {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   const GoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const userInfo = await signInWithPopup(auth, provider);
+      const user = userInfo.user;
+      await setDoc(doc(db, `userInfo`, `${user.uid}`), {
+        userName: user.displayName,
+        email: user.email,
+        avatar: user.photoURL,
+        userId: user.uid,
+        createdAt: Date.now(),
+      });
       navigate("/");
     } catch (err) {
       console.log(err);

@@ -15,7 +15,7 @@ const Modal = styled.div`
   background-color: #fff;
   border-radius: 1rem;
   transform: translate(-50%, -50%);
-  z-index: 9;
+  z-index: 99;
 
   @media screen and (max-width: 648px) {
     width: 90%;
@@ -80,6 +80,7 @@ const ModalFade = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
+  z-index: 90;
 `;
 
 const FileUpload = styled(Input)`
@@ -112,6 +113,7 @@ const WriteModal = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateA
     if (user && files && files.length === 1) {
       if (files[0].size > FILE_MAX_SIZE) {
         alert("사진첨부는 최대 2MB까지 가능합니다.");
+        return;
       } else {
         setFile(files[0]);
       }
@@ -132,6 +134,8 @@ const WriteModal = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateA
           userName: user.displayName,
           userId: user.uid,
           thread,
+          avatar: user.photoURL,
+          email: user.email,
           createdAt: Date.now(),
         });
 

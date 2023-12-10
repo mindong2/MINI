@@ -1,7 +1,8 @@
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { doc, setDoc } from "firebase/firestore";
 
 export const OauthBtn = styled.button`
   display: flex;
@@ -37,7 +38,15 @@ const GithubBtn = () => {
   const provider = new GithubAuthProvider();
   const gitHubLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const userInfo = await signInWithPopup(auth, provider);
+      const user = userInfo.user;
+      await setDoc(doc(db, `userInfo`, `${user.uid}`), {
+        userName: user.displayName,
+        email: user.email,
+        avatar: user.photoURL,
+        userId: user.uid,
+        createdAt: Date.now(),
+      });
       navigate("/");
     } catch (err) {
       console.log(err);
