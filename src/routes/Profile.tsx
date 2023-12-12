@@ -1,4 +1,4 @@
-import { DocumentData, collection, doc, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { DocumentData, Unsubscribe, collection, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { auth, db, storage } from "../firebase";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -40,6 +40,17 @@ const ProfileTitle = styled.div`
   align-items: center;
   margin-top: 5rem;
   text-align: center;
+  .change_icon {
+    position: absolute;
+    bottom: 2rem;
+    right: -0.8rem;
+    background-color: #fff;
+    width: 4rem;
+    height: 4rem;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+  }
 `;
 
 const NameWrap = styled.div`
@@ -88,12 +99,21 @@ const ProfileNameInput = styled.input`
   margin-top: 1rem;
   width: 100%;
   max-width: 30rem;
-  padding: 0 0 0.5rem 0;
-  font-size: 3rem;
+  padding: 0 5rem 0.5rem 5rem;
+  font-size: 2.4rem;
   outline: none;
   border: none;
   border-bottom: 1px solid #ccc;
   text-align: center;
+`;
+
+const NoThread = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40rem;
+  margin-top: 4rem;
+  font-size: 2.4rem;
 `;
 
 interface IUserInfo {
@@ -134,29 +154,41 @@ const Profile = () => {
   };
 
   const userNameSubmit = async () => {
+    if (userName.length > 12) {
+      alert("이름은 최대 12글자입니다!");
+      return;
+    }
     if (window.confirm("이름을 수정하시겠어요?")) {
       try {
+        if (!user) return;
+
+        await updateProfile(user, { displayName: userName });
+
         await updateDoc(doc(db, `userInfo`, `${userInfo?.userId}`), {
           userName,
         });
 
         // threads에서 userId에 대한 모든 게시글들 이름을 바꿈
+
+        const fetchQuery = query(collection(db, "threads"), where("userId", "==", userInfo?.userId));
+        const docs = await getDocs(fetchQuery);
+
+        docs.forEach(async (docSnapshot) => {
+          const docRef = doc(db, "threads", docSnapshot.id);
+          await updateDoc(docRef, {
+            userName,
+          });
+        });
+
         alert("이름이 수정되었습니다!");
-        window.location.reload();
       } catch (err) {
         console.error(err);
+      } finally {
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       }
     }
-  };
-
-  const getThreads = async () => {
-    const fetchQuery = query(collection(db, "threads"), where("userId", "==", urlUserId), orderBy("createdAt", "desc"), limit(25));
-    const snapshot = await getDocs(fetchQuery);
-    const threadsList = snapshot.docs.map((doc) => {
-      const { email, userId, userName, thread, fileUrl, createdAt } = doc.data();
-      return { email, userId, userName, thread, fileUrl, createdAt, id: doc.id };
-    });
-    setThreads(threadsList);
   };
 
   const avatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,10 +223,27 @@ const Profile = () => {
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  }, [urlUserId]);
 
   useEffect(() => {
+    let unsubscribe: Unsubscribe | null = null;
+
+    const getThreads = async () => {
+      const fetchQuery = query(collection(db, "threads"), where("userId", "==", urlUserId), orderBy("createdAt", "desc"), limit(25));
+
+      unsubscribe = await onSnapshot(fetchQuery, (snapshot) => {
+        const threadsList = snapshot.docs.map((doc) => {
+          const { email, userId, userName, thread, fileUrl, createdAt, commentList, likeUser } = doc.data();
+          return { email, userId, userName, thread, fileUrl, createdAt, commentList, likeUser, id: doc.id };
+        });
+        setThreads(threadsList);
+      });
+    };
     getThreads();
+
+    return () => {
+      unsubscribe && unsubscribe();
+    };
   }, [urlUserId]);
 
   useEffect(() => {
@@ -207,8 +256,18 @@ const Profile = () => {
         <ProfileTitle>
           {user?.uid === urlUserId ? (
             <>
-              <label htmlFor="profile_file" style={{ display: "block", cursor: "pointer" }}>
+              <label htmlFor="profile_file" style={{ position: "relative", display: "block", cursor: "pointer" }}>
                 <ProfileImg src={`${avatar}`} alt="" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 change_icon"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+                </svg>
               </label>
               <input
                 type="file"
@@ -224,7 +283,7 @@ const Profile = () => {
           )}
           {isUpdate ? (
             <NameWrap>
-              <ProfileNameInput type="text" defaultValue={userInfo?.userName} onChange={userNameChange} maxLength={8} />
+              <ProfileNameInput type="text" defaultValue={userInfo?.userName} onChange={userNameChange} maxLength={12} />
               {/* 완료 */}
               <ProfileIcon className="check" onClick={userNameSubmit}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -241,24 +300,31 @@ const Profile = () => {
           ) : (
             <NameWrap>
               <ProfileName>{userInfo?.userName}</ProfileName>
-              <ProfileIcon onClick={() => setIsUpdate(true)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                  />
-                </svg>
-              </ProfileIcon>
+              {user?.uid === urlUserId ? (
+                <ProfileIcon onClick={() => setIsUpdate(true)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                    />
+                  </svg>
+                </ProfileIcon>
+              ) : null}
             </NameWrap>
           )}
         </ProfileTitle>
         <NoticeBar>{userInfo?.userName}님이 작성한 글</NoticeBar>
-        <Thread>
-          {threads.map((thread) => (
-            <ThreadList key={thread.id} {...thread} avatar={userInfo?.avatar} />
-          ))}
-        </Thread>
+
+        {threads.length !== 0 ? (
+          <Thread>
+            {threads.map((thread) => (
+              <ThreadList key={thread.id} {...thread} avatar={userInfo?.avatar} />
+            ))}
+          </Thread>
+        ) : (
+          <NoThread>아직 작성한 글이 없어요 :(</NoThread>
+        )}
       </Wrapper>
     </>
   );

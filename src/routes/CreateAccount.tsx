@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { auth, db } from "../firebase";
@@ -8,6 +8,9 @@ import { Form, ErrorMSG, FlexWrap, FormField, Input, LoginTitle, Logo, NoticeMSG
 import BackgroundField from "../components/BackgroundField";
 import { ErrorFilter } from "../util/firebaseErrors";
 import { doc, setDoc } from "firebase/firestore";
+import "aos/dist/aos.css";
+import AOS from "aos";
+
 interface IInput {
   name: string;
   email: string;
@@ -50,10 +53,14 @@ const CreateAccount = () => {
     }
   };
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <>
       <FlexWrap>
-        <FormField>
+        <FormField data-aos="fade-right" data-aos-duration="500">
           <Logo>
             <img src="/img/logo.png" alt="로고" />
           </Logo>

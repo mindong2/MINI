@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import { auth } from "./firebase";
@@ -15,7 +15,7 @@ function App() {
     init();
   }, []);
 
-  return <Suspense fallback={<LoadingScreen />}>{isLoading ? <LoadingScreen></LoadingScreen> : <RouterProvider router={router} />}</Suspense>;
+  return isLoading ? <LoadingScreen></LoadingScreen> : <RouterProvider router={router} />;
 }
 
 export default App;

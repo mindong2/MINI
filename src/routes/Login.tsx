@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import GoogleBtn from "../components/GoogleBtn";
 import { Form, ErrorMSG, FlexWrap, FormField, Input, LoginTitle, Logo, NoticeMSG } from "../style/StartPage";
 import BackgroundField from "../components/BackgroundField";
 import { ErrorFilter } from "../util/firebaseErrors";
+import AOS from "aos";
 
 interface IInput {
   email: string;
@@ -37,10 +38,13 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    AOS.init();
+  }, []);
   return (
     <>
       <FlexWrap>
-        <FormField>
+        <FormField data-aos="fade-right" data-aos-duration="500">
           <Logo>
             <img src="/img/logo.png" alt="로고" />
           </Logo>

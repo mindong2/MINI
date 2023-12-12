@@ -6,6 +6,7 @@ import Login from "./routes/Login";
 import CreateAccount from "./routes/CreateAccount";
 import ProtectRoute from "./components/protect-route";
 import SendMessage from "./routes/SendMessage";
+import RecommendUser from "./routes/RecommendUser";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "profile/:id",
         element: <Profile />,
+      },
+      {
+        path: "/recommend-user",
+        element: <RecommendUser />,
       },
     ],
   },

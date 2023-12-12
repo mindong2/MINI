@@ -137,6 +137,8 @@ const WriteModal = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateA
           avatar: user.photoURL,
           email: user.email,
           createdAt: Date.now(),
+          commentList: [],
+          likeUser: [],
         });
 
         // 사진 insert

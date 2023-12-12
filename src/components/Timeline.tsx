@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Unsubscribe, collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import styled from "styled-components";
 import ThreadList from "../components/ThreadList";
+import { TextArea } from "./WriteModal";
 
 export const Thread = styled.ul`
   display: flex;
@@ -10,6 +11,24 @@ export const Thread = styled.ul`
   gap: 2rem 0;
   padding: 5rem 0;
 `;
+
+const WriteText = styled.div``;
+
+interface ICommentList {
+  docId: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  comment: string;
+  avatar: string;
+}
+
+export interface ILikeUser {
+  docId: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+}
 
 export interface IThread {
   id: string;
@@ -20,11 +39,12 @@ export interface IThread {
   fileUrl?: string;
   avatar?: string;
   createdAt: number;
+  commentList: ICommentList[];
+  likeUser: ILikeUser[];
 }
 
 const Timeline = () => {
   const [threadData, setThreadData] = useState<IThread[]>([]);
-
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
 
@@ -40,8 +60,8 @@ const Timeline = () => {
 
       unsubscribe = await onSnapshot(fetchQuery, (snapshot) => {
         const threadArr = snapshot.docs.map((doc) => {
-          const { email, userId, userName, thread, fileUrl, avatar, createdAt } = doc.data();
-          return { email, userId, userName, thread, fileUrl, createdAt, avatar, id: doc.id };
+          const { email, userId, userName, thread, fileUrl, avatar, createdAt, commentList, likeUser } = doc.data();
+          return { email, userId, userName, thread, fileUrl, createdAt, avatar, commentList, likeUser, id: doc.id };
         });
         setThreadData(threadArr);
       });
@@ -54,11 +74,16 @@ const Timeline = () => {
     };
   }, [threadData]);
   return (
-    <Thread>
-      {threadData.map((thread) => (
-        <ThreadList key={thread.id} {...thread} />
-      ))}
-    </Thread>
+    <>
+      <WriteText>
+        <TextArea />
+      </WriteText>
+      <Thread>
+        {threadData.map((thread) => (
+          <ThreadList key={thread.id} {...thread} />
+        ))}
+      </Thread>
+    </>
   );
 };
 

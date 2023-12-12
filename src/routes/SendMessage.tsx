@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { auth } from "../firebase";
@@ -7,6 +7,7 @@ import { FirebaseError } from "firebase/app";
 import { Form, ErrorMSG, FlexWrap, FormField, Input, LoginTitle, Logo, NoticeMSG } from "../style/StartPage";
 import BackgroundField from "../components/BackgroundField";
 import { ErrorFilter } from "../util/firebaseErrors";
+import AOS from "aos";
 
 interface IInput {
   email: string;
@@ -33,11 +34,13 @@ const SendMessage = () => {
       setIsLoading(false);
     }
   };
-
+  useEffect(() => {
+    AOS.init();
+  }, []);
   return (
     <>
       <FlexWrap>
-        <FormField>
+        <FormField data-aos="fade-right" data-aos-duration="500">
           <Logo>
             <img src="/img/logo.png" alt="로고" />
           </Logo>
