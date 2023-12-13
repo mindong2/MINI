@@ -47,7 +47,12 @@ const SendMessage = () => {
           <LoginTitle>비밀번호 찾기</LoginTitle>
 
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input {...register("email", { required: true })} type="email" placeholder="비밀번호 재설정 메일을 받을 이메일을 작성해주세요." />
+            <Input
+              {...register("email", { required: true })}
+              type="email"
+              placeholder="비밀번호 재설정 메일을 받을 이메일을 작성해주세요."
+              autoComplete="off"
+            />
             <Input type="submit" value={isLoading ? "전송중..." : "전송"} className="pink_btn" />
           </Form>
           <NoticeMSG>

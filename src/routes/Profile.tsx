@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   @media screen and (max-width: 648px) {
     max-width: 64.8rem;
     width: 100%;
-    padding: 0 4.17%;
+    padding: 7rem 4.17% 10rem;
   }
 `;
 export const NoticeBar = styled.div`
@@ -31,7 +31,7 @@ export const NoticeBar = styled.div`
   border-radius: 4px;
   margin-top: 3rem;
   margin-bottom: -2rem;
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: bold;
 `;
 const ProfileTitle = styled.div`
@@ -48,7 +48,7 @@ const ProfileTitle = styled.div`
     width: 4rem;
     height: 4rem;
     padding: 0.6rem;
-    border: 1px solid #ccc;
+    border: 0.1rem solid #ccc;
     border-radius: 50%;
   }
 `;
@@ -61,6 +61,7 @@ const NameWrap = styled.div`
 const ProfileImg = styled.img`
   width: 15rem;
   height: 15rem;
+  border: 0.1rem solid #ccc;
   border-radius: 50%;
 `;
 
@@ -103,7 +104,7 @@ const ProfileNameInput = styled.input`
   font-size: 2.4rem;
   outline: none;
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 0.1rem solid #ccc;
   text-align: center;
 `;
 
@@ -217,6 +218,15 @@ const Profile = () => {
       await updateDoc(doc(db, "userInfo", `${urlUserId}`), {
         avatar: url,
       });
+      const fetchQuery = query(collection(db, "threads"), where("userId", "==", userInfo?.userId));
+      const docs = await getDocs(fetchQuery);
+
+      docs.forEach(async (docSnapshot) => {
+        const docRef = doc(db, "threads", docSnapshot.id);
+        await updateDoc(docRef, {
+          avatar: url,
+        });
+      });
       window.location.reload();
     }
   };
@@ -233,8 +243,8 @@ const Profile = () => {
 
       unsubscribe = await onSnapshot(fetchQuery, (snapshot) => {
         const threadsList = snapshot.docs.map((doc) => {
-          const { email, userId, userName, thread, fileUrl, createdAt, commentList, likeUser } = doc.data();
-          return { email, userId, userName, thread, fileUrl, createdAt, commentList, likeUser, id: doc.id };
+          const { email, userId, userName, thread, fileUrl, createdAt, commentList, avatar, likeUser } = doc.data();
+          return { email, userId, userName, thread, fileUrl, createdAt, commentList, avatar, likeUser, id: doc.id };
         });
         setThreads(threadsList);
       });

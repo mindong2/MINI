@@ -67,9 +67,9 @@ const CreateAccount = () => {
           <LoginTitle>회원가입</LoginTitle>
 
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input {...register("name", { required: true })} type="text" placeholder="이름을 작성해 주세요." />
-            <Input {...register("email", { required: true })} type="email" placeholder="이메일을 작성해 주세요." />
-            <Input {...register("password", { required: true })} type="password" placeholder="비밀번호를 작성해 주세요." />
+            <Input {...register("name", { required: true })} type="text" placeholder="이름을 작성해 주세요." autoComplete="off" />
+            <Input {...register("email", { required: true })} type="email" placeholder="이메일을 작성해 주세요." autoComplete="off" />
+            <Input {...register("password", { required: true })} type="password" placeholder="비밀번호를 작성해 주세요." autoComplete="off" />
             {error !== "" ? <ErrorMSG>{error}</ErrorMSG> : null}
             <Input type="submit" value={isLoading ? "회원가입중..." : "회원가입"} className="pink_btn" />
           </Form>

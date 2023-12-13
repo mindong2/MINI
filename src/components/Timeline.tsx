@@ -1,9 +1,16 @@
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import { useEffect, useState } from "react";
 import { Unsubscribe, collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import styled from "styled-components";
 import ThreadList from "../components/ThreadList";
-import { TextArea } from "./WriteModal";
+import WriteModal from "./WriteModal";
+import { useNavigate } from "react-router-dom";
+
+const Wrapper = styled.div`
+  @media screen and (max-width: 648px) {
+    padding: 10rem 0;
+  }
+`;
 
 export const Thread = styled.ul`
   display: flex;
@@ -12,7 +19,31 @@ export const Thread = styled.ul`
   padding: 5rem 0;
 `;
 
-const WriteText = styled.div``;
+const WriteTextWrap = styled.div`
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  img {
+    width: 6rem;
+    border: 0.1rem solid #ccc;
+    border-radius: 50%;
+  }
+`;
+
+const WriteText = styled.div`
+  width: 100%;
+  padding: 2rem 1rem;
+  font-size: 1.8rem;
+  border-bottom: 0.1rem solid #ccc;
+
+  &:focus {
+    border: 0;
+    box-shadow: none;
+    border-bottom: 0.1rem solid #ff5d6a;
+  }
+`;
 
 interface ICommentList {
   docId: string;
@@ -44,7 +75,10 @@ export interface IThread {
 }
 
 const Timeline = () => {
+  const navigate = useNavigate();
+  const user = auth.currentUser;
   const [threadData, setThreadData] = useState<IThread[]>([]);
+  const [isModal, setIsModal] = useState(false);
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
 
@@ -61,7 +95,7 @@ const Timeline = () => {
       unsubscribe = await onSnapshot(fetchQuery, (snapshot) => {
         const threadArr = snapshot.docs.map((doc) => {
           const { email, userId, userName, thread, fileUrl, avatar, createdAt, commentList, likeUser } = doc.data();
-          return { email, userId, userName, thread, fileUrl, createdAt, avatar, commentList, likeUser, id: doc.id };
+          return { email, userId, userName, thread, fileUrl, avatar, createdAt, commentList, likeUser, id: doc.id };
         });
         setThreadData(threadArr);
       });
@@ -75,14 +109,18 @@ const Timeline = () => {
   }, [threadData]);
   return (
     <>
-      <WriteText>
-        <TextArea />
-      </WriteText>
-      <Thread>
-        {threadData.map((thread) => (
-          <ThreadList key={thread.id} {...thread} />
-        ))}
-      </Thread>
+      <Wrapper>
+        <WriteTextWrap>
+          <img src={user?.photoURL ? `${user?.photoURL}` : "/img/user.png"} alt="" onClick={() => navigate(`/profile/${user?.uid}`)} />
+          <WriteText onClick={() => setIsModal(true)}>오늘은 어떤 하루였나요?</WriteText>
+        </WriteTextWrap>
+        <Thread>
+          {threadData.map((thread) => (
+            <ThreadList key={thread.id} {...thread} />
+          ))}
+        </Thread>
+        {isModal ? <WriteModal setIsModal={setIsModal} /> : null}
+      </Wrapper>
     </>
   );
 };

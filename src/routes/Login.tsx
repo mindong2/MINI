@@ -50,8 +50,8 @@ const Login = () => {
           </Logo>
           <LoginTitle>로그인</LoginTitle>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input {...register("email", { required: true })} type="email" placeholder="이메일을 작성해 주세요." />
-            <Input {...register("password", { required: true })} type="password" placeholder="비밀번호를 작성해 주세요." />
+            <Input {...register("email", { required: true })} type="email" placeholder="이메일을 작성해 주세요." autoComplete="off" />
+            <Input {...register("password", { required: true })} type="password" placeholder="비밀번호를 작성해 주세요." autoComplete="off" />
             {error !== "" ? <ErrorMSG>{error}</ErrorMSG> : null}
 
             <Input type="submit" value={isLoading ? "로그인중..." : "로그인"} className="pink_btn" />

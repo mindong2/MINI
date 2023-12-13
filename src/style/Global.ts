@@ -3,6 +3,9 @@ import reset from "styled-reset";
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
+    
+    /* Firefox */
+
     html,body {
         font-size:62.5%; //1rem -> 10px
         font-family: 'Noto Sans KR', sans-serif;
@@ -11,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
     }
     a{
         text-decoration:none;
+        -webkit-appearance: none;
     }
     *{
         box-sizing:border-box;

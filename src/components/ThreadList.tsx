@@ -11,7 +11,7 @@ import { ProfileCard, RecommendWrap } from "./SideUserList";
 
 const Wrapper = styled.li`
   padding: 3rem;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.6rem;
   background-color: #fff;
 
@@ -114,7 +114,7 @@ const Utils = styled.div`
   margin-top: 1rem;
   padding: 1.5rem;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.5rem;
 `;
 
@@ -147,14 +147,14 @@ const UpdateBtn = styled.button`
   padding: 1rem;
   background-color: #fff;
   color: #474747;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.5rem;
   outline: none;
   font-size: 1.4rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   &:hover {
-    border: 1px solid #ff5d6a;
+    border: 0.1rem solid #ff5d6a;
     background-color: #ff5d6a;
     color: #fff;
   }
@@ -179,12 +179,13 @@ const CommentTextArea = styled.textarea`
   width: 100%;
   padding: 1rem 0.5rem;
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 0.1rem solid #ccc;
   color: #474747;
   font-size: 1.6rem;
   padding-right: 3.2rem;
   resize: none;
   outline: none;
+  border-radius: 0;
 
   &::-webkit-scrollbar {
     display: none;
@@ -461,7 +462,7 @@ const ThreadList = ({ email, userName, userId, fileUrl, thread, createdAt, id, l
       {isCommenting ? (
         <RecommendWrap>
           {commentList.map((data, idx) => (
-            <div key={idx} style={{ paddingBottom: "1.6rem", borderBottom: "1px solid #ccc" }}>
+            <div key={idx} style={{ paddingBottom: "1.6rem", borderBottom: "0.1rem solid #ccc" }}>
               <ProfileCard>
                 <div className="userInfo">
                   <Link to={`/profile/${data.userId}`}>

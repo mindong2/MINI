@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   @media screen and (max-width: 648px) {
     max-width: 64.8rem;
     width: 100%;
-    padding: 0 4.17%;
+    padding: 1rem;
   }
   a {
     color: #474747;

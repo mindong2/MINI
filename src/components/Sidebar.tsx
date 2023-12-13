@@ -9,7 +9,7 @@ export const Aside = styled.aside`
   bottom: 0;
   width: 30rem;
   padding: 3rem;
-  border-right: 1px solid #ccc;
+  border-right: 0.1rem solid #ccc;
   background-color: #fff;
   z-index: 11;
   @media screen and (max-width: 1275px) {
@@ -23,13 +23,15 @@ export const Aside = styled.aside`
   @media screen and (max-width: 648px) {
     top: initial;
     width: 100%;
-    height: 10rem;
+    height: 8rem;
+    padding: 2rem 3rem;
     border-right: none;
-    border-top: 1px solid #ccc;
+    border-top: 0.1rem solid #ccc;
   }
 `;
 
 const MenuLogo = styled.h1`
+  margin-left: -1.2rem;
   text-align: center;
   a {
     display: flex;
@@ -106,9 +108,29 @@ const MenuTab = styled.li`
     &::after {
       display: none;
     }
+    &.menu_home {
+      order: 0;
+    }
+
+    &.menu_recommend {
+      order: 1;
+    }
+
+    &.menu_write {
+      order: 2;
+    }
+
+    &.menu_profile {
+      order: 3;
+    }
+
+    &.menu_logout {
+      order: 4;
+    }
+
     svg,
     img {
-      width: 4rem;
+      width: 3rem;
       margin-right: none;
     }
   }
@@ -129,7 +151,7 @@ const Sidebar = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateActi
         <Link to={"/"}></Link>
       </MenuLogo>
       <Menu>
-        <MenuTab onClick={() => navigate("/")}>
+        <MenuTab onClick={() => navigate("/")} className="menu_home">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
             <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
             <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
@@ -137,7 +159,7 @@ const Sidebar = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateActi
           <span className="tab_text">홈</span>
         </MenuTab>
 
-        <MenuTab onClick={() => setIsModal(true)}>
+        <MenuTab onClick={() => setIsModal(true)} className="menu_write">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
             <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
             <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
@@ -145,34 +167,25 @@ const Sidebar = ({ setIsModal }: { setIsModal: React.Dispatch<React.SetStateActi
           <span className="tab_text">글쓰기</span>
         </MenuTab>
 
-        <MenuTab onClick={() => navigate("/recommend-user")}>
+        <MenuTab onClick={() => navigate("/recommend-user")} className="menu_recommend">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z"
+              d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
             />
           </svg>
+
           <span className="tab_text">추천친구</span>
         </MenuTab>
 
-        <MenuTab onClick={() => navigate(`/profile/${user?.uid}`)}>
-          {user?.photoURL !== null ? (
-            <img src={user?.photoURL} alt="" />
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-              />
-            </svg>
-          )}
+        <MenuTab onClick={() => navigate(`/profile/${user?.uid}`)} className="menu_profile">
+          {user?.photoURL !== null ? <img src={user?.photoURL} alt="" /> : <img src="/img/user.png" alt="" />}
 
           <span className="tab_text">프로필</span>
         </MenuTab>
 
-        <MenuTab onClick={Logout}>
+        <MenuTab onClick={Logout} className="menu_logout">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
             <path
               fillRule="evenodd"

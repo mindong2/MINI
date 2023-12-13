@@ -8,7 +8,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem 0;
+  gap: 1rem 0;
   width: 64.8rem;
   margin: 0 auto;
   @media screen and (max-width: 1275px) {
@@ -20,9 +20,11 @@ const Wrapper = styled.div`
   }
 
   @media screen and (max-width: 648px) {
+    gap: 1.6rem 0;
+
     max-width: 64.8rem;
     width: 100%;
-    padding: 0 4.17%;
+    padding: 7rem 4.17% 12rem;
   }
 `;
 

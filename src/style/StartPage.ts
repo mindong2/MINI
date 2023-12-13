@@ -9,6 +9,11 @@ export const Logo = styled.div`
   & img {
     width: 100%;
   }
+
+  @media screen and (max-width: 648px) {
+    width: 36rem;
+    margin: 0rem 0 2rem 0;
+  }
 `;
 
 export const FlexWrap = styled.main`
@@ -29,7 +34,7 @@ export const FormField = styled.section`
     flex: 1;
     width: 100%;
     min-width: unset;
-    padding: 4rem;
+    padding: 6rem 4rem 8rem 4rem;
   }
 `;
 
@@ -84,19 +89,22 @@ export const Form = styled.form`
   flex-direction: column;
   gap: 2rem;
   width: 100%;
+  @media screen and (max-width: 648px) {
+    gap: 1.4rem;
+  }
 `;
 
 export const Input = styled.input`
   display: flex;
   width: 100%;
   padding: 1.5rem;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.6rem;
   outline: none;
   font-size: 1.8rem;
   transition: all 0.15s ease-in-out;
   &:focus {
-    border: 1px solid #ff5d6a;
+    border: 0.1rem solid #ff5d6a;
     box-shadow: 0 0 0 1px #ff5d6a inset;
   }
 
@@ -111,13 +119,13 @@ export const Input = styled.input`
     &:focus {
       background-color: #ff5d6a;
       color: #fff;
-      border: 1px solid #ff5d6a;
+      border: 0.1rem solid #ff5d6a;
       box-shadow: none;
     }
     &.pink_btn {
       background-color: #ff5d6a;
       color: #fff;
-      border: 1px solid #ff5d6a;
+      border: 0.1rem solid #ff5d6a;
       box-shadow: none;
     }
   }
@@ -135,5 +143,9 @@ export const NoticeMSG = styled(ErrorMSG)`
   cursor: pointer;
   a {
     color: #ff5d6a;
+  }
+
+  @media screen and (max-width: 648px) {
+    margin-top: 1.6rem;
   }
 `;

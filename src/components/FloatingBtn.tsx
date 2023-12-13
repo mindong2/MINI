@@ -18,6 +18,18 @@ const FloatBtn = styled.div`
     color: #fff;
     width: 3rem;
   }
+
+  @media screen and (max-width: 648px) {
+    bottom: 9.5rem;
+    right: 2rem;
+    a {
+      padding: 1rem;
+    }
+
+    svg {
+      width: 2.5rem;
+    }
+  }
 `;
 
 const FloatingBtn = () => {

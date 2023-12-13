@@ -11,7 +11,7 @@ export const OauthBtn = styled.button`
   width: 100%;
   margin-top: 2rem;
   padding: 1.5rem;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.6rem;
   background-color: #fff;
   outline: none;
@@ -25,11 +25,26 @@ export const OauthBtn = styled.button`
     margin-right: 1rem;
   }
 
+  svg,
+  span {
+    color: #474747;
+  }
+
   &:hover {
     background-color: #ff5d6a;
     color: #fff;
-    border: 1px solid #ff5d6a;
+    border: 0.1rem solid #ff5d6a;
     box-shadow: none;
+  }
+
+  @media screen and (max-width: 648px) {
+    margin-top: 1.4rem;
+    &:hover {
+      background-color: #fff;
+      color: #474747;
+      border: 0.1rem solid #ccc;
+      box-shadow: none;
+    }
   }
 `;
 
@@ -55,7 +70,7 @@ const GithubBtn = () => {
   return (
     <OauthBtn type="button" onClick={gitHubLogin}>
       <img src="/img/github-logo.svg" alt="" />
-      깃허브로 로그인하기
+      <span>깃허브로 로그인하기</span>
     </OauthBtn>
   );
 };

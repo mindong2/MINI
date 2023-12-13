@@ -15,7 +15,7 @@ const Modal = styled.div`
   background-color: #fff;
   border-radius: 1rem;
   transform: translate(-50%, -50%);
-  z-index: 99;
+  z-index: 202;
 
   @media screen and (max-width: 648px) {
     width: 90%;
@@ -38,13 +38,13 @@ const FileLabel = styled.label`
   align-items: center;
   width: 100%;
   height: 10rem;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.6rem;
   transition: all 0.15s ease-in-out;
   cursor: pointer;
 
   &:hover {
-    border: 1px solid #ff5d6a;
+    border: 0.1rem solid #ff5d6a;
     box-shadow: 0 0 0 1px #ff5d6a inset;
   }
 
@@ -63,12 +63,12 @@ export const TextArea = styled.textarea`
   margin-top: 2rem;
   outline: none;
   resize: none;
-  border: 1px solid #ccc;
+  border: 0.1rem solid #ccc;
   border-radius: 0.6rem;
   font-size: 1.8rem;
   transition: all 0.15s ease-in-out;
   &:focus {
-    border: 1px solid #ff5d6a;
+    border: 0.1rem solid #ff5d6a;
     box-shadow: 0 0 0 1px #ff5d6a inset;
   }
 `;
@@ -80,7 +80,7 @@ const ModalFade = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 90;
+  z-index: 201;
 `;
 
 const FileUpload = styled(Input)`
