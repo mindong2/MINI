@@ -27,6 +27,7 @@ const WriteTextWrap = styled.div`
   cursor: pointer;
   img {
     width: 6rem;
+    height: 6rem;
     border: 0.1rem solid #ccc;
     border-radius: 50%;
   }

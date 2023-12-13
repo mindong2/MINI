@@ -159,6 +159,10 @@ const Profile = () => {
       alert("이름은 최대 12글자입니다!");
       return;
     }
+    if (userName === "") {
+      alert("이름을 작성해 주세요");
+      return;
+    }
     if (window.confirm("이름을 수정하시겠어요?")) {
       try {
         if (!user) return;

@@ -35,6 +35,11 @@ export const OauthBtn = styled.button`
     color: #fff;
     border: 0.1rem solid #ff5d6a;
     box-shadow: none;
+
+    svg,
+    span {
+      color: #fff;
+    }
   }
 
   @media screen and (max-width: 648px) {
@@ -44,6 +49,10 @@ export const OauthBtn = styled.button`
       color: #474747;
       border: 0.1rem solid #ccc;
       box-shadow: none;
+      svg,
+      span {
+        color: #474747;
+      }
     }
   }
 `;
